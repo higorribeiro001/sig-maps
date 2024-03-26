@@ -1,3 +1,8 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
 .card-map {
     border: 1px solid #DCDDE6;
     border-radius: 5px;
@@ -8,8 +13,9 @@
 .legend {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    width: 100%;
     height: 40px;
     padding: 15px;
 }
@@ -33,7 +39,7 @@
 
 .legend-map {
     height: 100%;
-    width: 92%;
+    width: 200px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -48,34 +54,21 @@
 }
 
 .block1 {
-    width: 100%;
-    height: 40%;
-    background-image: linear-gradient(
-        to right,
-        #71D46C,
-        #D1D02A
-    );
+    width: 20px;
+    height: 20px;
+    background-color: #71D46C;
 }
 
 .block2 {
-    width: 100%;
-    height: 40%;
-    background-image: linear-gradient(
-        to right,
-        #D3D029,
-        #EBBB07,
-        #F1A320
-    );
+    width: 20px;
+    height: 20px;
+    background-color: #f0e222;
 }
 
 .block3 {
-    width: 100%;
-    height: 40%;
-    background-image: linear-gradient(
-        to right,
-        #F0A122,
-        #D43230
-    );
+    width: 20px;
+    height: 20px;
+    background-color: #D43230;
 }
 
 .col-legend {
