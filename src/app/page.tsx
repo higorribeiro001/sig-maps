@@ -11,13 +11,17 @@ import { cities } from "./cities";
 import { county } from "./county";
 import RemoveRedEyeSharpIcon from '@mui/icons-material/RemoveRedEyeSharp';
 import SpaSharpIcon from '@mui/icons-material/SpaSharp';
+import { amzPA } from "./amz";
+import { loggingPA } from "./desmataPA";
 
 export default function Home() {
   const [nameButton, setNameButton] = useState("");
   const [clickBack, setClickBack] = useState(false);
   const [index, setIndex] = useState(0);
+  const mapLoggingPa = new Map(loggingPA.map((b: { id: number, area_total: number }) => [b.id, b.area_total]));
+  const mapCertificationsCurrent = new Map(amzPA.map((b: { id: number, qtd_vigente: number }) => [b.id, b.qtd_vigente]));
+  const mapCertificationsProgress = new Map(amzPA.map((b: { id: number, qtd_andamento: number }) => [b.id, b.qtd_andamento]));
   const [travelPath, setTravelPath] = useState([
-    
     {
       name: "", 
       func: null, 
@@ -41,8 +45,10 @@ export default function Home() {
   const [dataScore, setDataScore] = useState(
     {
       name: "Pará", 
-      certificates: 150,
-      infoText: "Empresas Certificadas no Estado",
+      certificates_current: "3",
+      certificates_progress: "1",
+      logging: "8.8 milhões",
+      infoText: "Empresa(s)",
     }
   );
 
@@ -57,8 +63,8 @@ export default function Home() {
     let namemapState: any;
     const width: any = 863;
     const height: any = 647;
-    const colorsCustom = ["#71D46C", "#EBBB07", "#D43230"];
-    const color: any = d3.scaleSequential().domain([1, 27])
+    const colorsCustom = ["red", "yellow", "green"];
+    const color: any = d3.scaleSequential().domain([0, 3])
       .interpolator(d3.interpolateRgbBasis(colorsCustom));
 
     const svg: any = d3
@@ -228,11 +234,13 @@ export default function Home() {
       setDataScore(
         {
           name: String(namemapCity.get(d.properties.cod)), 
-          certificates: 15, 
-          infoText: "Empresas Certificadas na Cidade",
+          certificates_current: mapCertificationsCurrent.get(d.properties.cod) !== undefined ? String(mapCertificationsCurrent.get(d.properties.cod)) : "0", 
+          certificates_progress: mapCertificationsProgress.get(d.properties.cod) !== undefined ? String(mapCertificationsProgress.get(d.properties.cod)) : "0", 
+          logging: String(mapLoggingPa.get(d.properties.cod)),
+          infoText: "Empresa(s)",
         }
       );
-
+      console.log(mapCertificationsCurrent.get(d.properties.cod))
     }
 
     function zoomed(event: any) {
@@ -297,7 +305,9 @@ export default function Home() {
               <div style={selected ? {display: 'flex', position: 'absolute', width: '660px', transition: "all 300ms ease-in-out" } : { transform: "translateX(-500px)", width: "0", height: "0", transition: "all 300ms ease-in-out", position: 'absolute', opacity: 0 }}>
                 <Card sx={{ width: '200px', height: "auto", padding: '16px', gap: '16px', margin: '13px', boxShadow: '0px 4px 6px -1px #0000001A' }}>
                   <Typography sx={{ fontSize: "18px", fontWeight: "600" }}>{dataScore.name}</Typography>
-                  <Typography sx={{ fontSize: "14px", fontWeight: "500", padding: "10px 0 10px 0" }}>Há <b>{dataScore.certificates}</b> {dataScore.infoText}</Typography>
+                  <Typography sx={{ fontSize: "14px", fontWeight: "500", padding: "10px 0 10px 0", textAlign: "justify" }}>Há <b>{dataScore.certificates_current}</b> {dataScore.infoText} com selo AMZ vigentes.</Typography>
+                  <Typography sx={{ fontSize: "14px", fontWeight: "500", padding: "10px 0 10px 0", textAlign: "justify" }}>Há <b>{dataScore.certificates_progress}</b> {dataScore.infoText} com selo AMZ em andamento.</Typography>
+                  <Typography sx={{ fontSize: "14px", fontWeight: "500", padding: "10px 0 10px 0", textAlign: "justify" }}>Esta área corresponde a <b>{dataScore.logging} Km²</b> da Amazônia Legal.</Typography>
                 </Card>
               </div>
             </div>
